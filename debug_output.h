@@ -62,6 +62,10 @@ struct DebugOutput {
         out << "\"" << value << "\"";
     }
 
+    static void print(std::ostream &out, const char * const value) {
+        out << "\"" << value << "\"";
+    }
+
     template<typename T1, typename T2>
     static void print(std::ostream &out, const std::pair<T1, T2> &value) {
         out << "(";

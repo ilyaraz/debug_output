@@ -17,5 +17,6 @@ int main() {
     aa.push_back('b');
     DEBUG(aa);
     DEBUG(2 * 2);
+    DEBUG("blah blah");
     return 0;
 }
