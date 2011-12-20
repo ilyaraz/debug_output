@@ -59,6 +59,25 @@ struct DebugOutput {
         out << "}";
     }
 
+    template<typename T>
+    static void print(std::ostream &out, const T &value, std::tuple<int> tuple, char(*)[IsContainer<T>::value] = 0){
+    	out << "{";
+    	int count = std::get<0>(tuple);
+    	int i = 0;
+    	for(const auto &item : value) {
+    		if(i == count){
+    			out << "...";
+    			break;
+    		}
+    		if(i > 0) {
+    			out << ", ";
+    		}
+    		print(out,item);
+    		++i;
+    	}
+    	out << "}";
+    }
+
     static void print(std::ostream &out, const std::string &value) {
         out << "\"" << value << "\"";
     }
@@ -89,17 +108,19 @@ struct DebugOutput {
     }
 
     template <typename T, typename U>
-    static void print(std::ostream &out, T&, U&){
+    static void print(std::ostream &out, const T&, const U&){
     	out<<"No matching function to print";
+    }
+
+    template <typename T>
+    static void print(std::ostream &out, const T& value, std::tuple<>){
+    	print(out, value);
     }
 
     template<typename T, typename U>
     static void run(std::ostream &out, const std::string &fileName, int lineNumber, const std::string &name, const T &value, const U& args) {
         out << "file \"" << fileName << "\" line " << lineNumber << ": " << name << " = ";
-        if(std::tuple_size<U>::value == 0)
-        	print(out, value);
-        else
-        	print(out, value, args);
+        print(out, value, args);
         out << std::endl;
     }
 };
