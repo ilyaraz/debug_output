@@ -5,8 +5,9 @@
 #include <iostream>
 #include <string>
 #include <utility>
+#include <tuple>
 
-#define DEBUG(x) DebugOutput::run(std::cerr, __FILE__, __LINE__, #x, x)
+#define DEBUG(x,...) DebugOutput::run(std::cerr, __FILE__, __LINE__, #x, x, std::make_tuple(__VA_ARGS__))
 
 struct DebugOutput {
     template <typename T>
@@ -75,13 +76,33 @@ struct DebugOutput {
         out << ")";
     }
 
-    template<typename T>
-    static void run(std::ostream &out, const std::string &fileName, int lineNumber, const std::string &name, const T &value) {
+    template <typename T>
+    static void print(std::ostream &out, T* array, std::tuple<int> tuple){
+    	out << "{";
+    	int count = std::get<0>(tuple);
+    	for(int i = 0; i < count; ++i){
+    		if(i>0)
+    			out<<", ";
+    		print(out, array[i]);
+    	}
+    	out << "}";
+    }
+
+    template <typename T, typename U>
+    static void print(std::ostream &out, T&, U&){
+    	out<<"No matching function to print";
+    }
+
+    template<typename T, typename U>
+    static void run(std::ostream &out, const std::string &fileName, int lineNumber, const std::string &name, const T &value, const U& args) {
         out << "file \"" << fileName << "\" line " << lineNumber << ": " << name << " = ";
-        print(out, value);
+        if(std::tuple_size<U>::value == 0)
+        	print(out, value);
+        else
+        	print(out, value, args);
         out << std::endl;
     }
 };
 #else
-#define DEBUG(x) {}
+#define DEBUG(args...) {}
 #endif

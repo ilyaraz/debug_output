@@ -4,7 +4,6 @@
 #include <iostream>
 #include <map>
 #include <vector>
-
 int main() {
     std::map<int, std::vector<int> > a;
     a[0].push_back(1);
@@ -18,5 +17,8 @@ int main() {
     DEBUG(aa);
     DEBUG(2 * 2);
     DEBUG("blah blah");
+    int b[5]={2,3,7,13,42};
+    DEBUG(b,5);
+    DEBUG(b,3);
     return 0;
 }
