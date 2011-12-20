@@ -109,5 +109,5 @@ struct DebugOutput {
     }
 };
 #else
-#define DEBUG(x) {}
+#define DEBUG(x) ({})
 #endif

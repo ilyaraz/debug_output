@@ -47,5 +47,8 @@ int main() {
     ss.insert(3);
     ss.insert(5);
     DEBUG(ss);
+    if (2 * 2 == 4) DEBUG(ss);
+    else {
+    }
     return 0;
 }
